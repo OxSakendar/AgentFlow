@@ -47,7 +47,7 @@ export function DeployContract({ wallet, onContractDeployed, activeContractAddre
     <section id="deploy" className={styles.section}>
       <div className={styles.header}>
         <div className={styles.headerText}>
-          <h2>Deploy Custom ERC-8183 Contract</h2>
+          <h2>Deploy AgentFlow Contract</h2>
           <p>Deploy a new programmable job registry for agent commerce on Arc Testnet</p>
         </div>
       </div>
@@ -159,7 +159,7 @@ export function DeployContract({ wallet, onContractDeployed, activeContractAddre
                   Deploying contract…
                 </>
               ) : (
-                'Deploy AgenticCommerce Contract'
+                'Deploy AgentFlow Contract'
               )}
             </button>
           )}

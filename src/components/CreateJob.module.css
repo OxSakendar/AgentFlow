@@ -26,20 +26,34 @@
   color: var(--text-tertiary);
 }
 
+.contractBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  flex-shrink: 0;
+}
+
+.lockIcon {
+  font-size: 11px;
+  opacity: 0.6;
+  user-select: none;
+}
+
 .contractLink {
   font-size: 12px;
   font-family: var(--font-mono);
   color: var(--accent-light);
-  background: var(--accent-dim);
-  border: 1px solid var(--border-accent);
-  padding: 5px 12px;
-  border-radius: 8px;
-  white-space: nowrap;
   text-decoration: none;
-  flex-shrink: 0;
-  transition: all 0.2s;
+  white-space: nowrap;
+  transition: color 0.2s;
 }
-.contractLink:hover { background: rgba(138,75,255,0.2); }
+.contractLink:hover { color: #c084fc; text-decoration: underline; }
+
+
 
 .form {
   display: flex;

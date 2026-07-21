@@ -9,25 +9,76 @@ import { DeployContract } from './components/DeployContract'
 import { AGENTIC_COMMERCE_CONTRACT } from './lib/constants'
 import './App.css'
 
+/**
+ * The Create Job contract address is permanently set to AGENTIC_COMMERCE_CONTRACT.
+ * It is NOT stored in state or localStorage and cannot be changed at runtime.
+ */
 export default function App() {
   const wallet = useWallet()
   const [latestJobId, setLatestJobId] = useState<bigint | null>(null)
-  
-  const [activeContractAddress, setActiveContractAddress] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('agentflow_contract_override')
-      if (saved && saved.startsWith('0x')) {
-        return saved
-      }
-    }
-    return AGENTIC_COMMERCE_CONTRACT
-  })
 
-  const handleContractDeployed = (newAddr: string) => {
-    setActiveContractAddress(newAddr)
-    localStorage.setItem('agentflow_contract_override', newAddr)
+  // ── Mandatory wallet gate ──────────────────────────────────────────────────
+  if (!wallet.isConnected) {
+    return (
+      <div className="app">
+        <Header wallet={wallet} />
+        <div className="gate">
+          <div className="gate-card">
+            <div className="gate-icon">⬡</div>
+            <h1 className="gate-title">Connect Your Wallet</h1>
+            <p className="gate-desc">
+              AgentFlow requires a connected wallet on <strong>Arc Testnet</strong> to
+              create, manage, and monitor agentic jobs.
+            </p>
+
+            <div className="gate-network">
+              <div className="gnet-row">
+                <span className="gnet-label">Network</span>
+                <span className="gnet-val">Arc Testnet</span>
+              </div>
+              <div className="gnet-row">
+                <span className="gnet-label">Chain ID</span>
+                <span className="gnet-val mono">5042002</span>
+              </div>
+              <div className="gnet-row">
+                <span className="gnet-label">Currency</span>
+                <span className="gnet-val">USDC</span>
+              </div>
+              <div className="gnet-row">
+                <span className="gnet-label">RPC</span>
+                <span className="gnet-val mono">rpc.testnet.arc.network</span>
+              </div>
+            </div>
+
+            <button
+              className="gate-btn"
+              onClick={wallet.connect}
+              disabled={wallet.isSwitchingNetwork}
+            >
+              {wallet.isSwitchingNetwork ? (
+                <><span className="gate-spinner" /> Switching Network…</>
+              ) : (
+                'Connect & Switch to Arc Testnet'
+              )}
+            </button>
+
+            {wallet.connectError && (
+              <div className="gate-error">⚠ {wallet.connectError}</div>
+            )}
+
+            <p className="gate-hint">
+              Don't have a wallet?{' '}
+              <a href="https://metamask.io/download/" target="_blank" rel="noreferrer">
+                Install MetaMask ↗
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
+  // ── Main app ───────────────────────────────────────────────────────────────
   return (
     <div className="app">
       <Header wallet={wallet} />
@@ -38,31 +89,30 @@ export default function App() {
         <div className="container">
           <InfoCards />
 
-          {/* ── Two-column layout for Create + Lookup ── */}
           <section id="jobs" className="panels">
             <div className="panel-left">
               <CreateJob
                 wallet={wallet}
-                contractAddress={activeContractAddress as `0x${string}`}
+                contractAddress={AGENTIC_COMMERCE_CONTRACT}
                 onJobCreated={(id) => setLatestJobId(id)}
               />
             </div>
             <div className="panel-right">
-              <JobLookup 
-                wallet={wallet} 
-                contractAddress={activeContractAddress as `0x${string}`}
-                initialId={latestJobId} 
+              <JobLookup
+                wallet={wallet}
+                contractAddress={AGENTIC_COMMERCE_CONTRACT}
+                initialId={latestJobId}
               />
             </div>
           </section>
 
           <DeployContract
             wallet={wallet}
-            activeContractAddress={activeContractAddress}
-            onContractDeployed={handleContractDeployed}
+            activeContractAddress={AGENTIC_COMMERCE_CONTRACT}
+            onContractDeployed={() => { /* permanent — address never changes */ }}
           />
 
-          {/* ── Network info strip ── */}
+          {/* Network info strip */}
           <div className="network-strip">
             <div className="net-item">
               <span className="net-label">Network</span>
@@ -74,15 +124,21 @@ export default function App() {
             </div>
             <div className="net-item">
               <span className="net-label">RPC</span>
-              <a href="https://rpc.testnet.arc.network" target="_blank" rel="noreferrer" className="net-val mono link">rpc.testnet.arc.network ↗</a>
+              <a href="https://rpc.testnet.arc.network" target="_blank" rel="noreferrer" className="net-val mono link">
+                rpc.testnet.arc.network ↗
+              </a>
             </div>
             <div className="net-item">
               <span className="net-label">Explorer</span>
-              <a href="https://testnet.arcscan.app" target="_blank" rel="noreferrer" className="net-val mono link">testnet.arcscan.app ↗</a>
+              <a href="https://testnet.arcscan.app" target="_blank" rel="noreferrer" className="net-val mono link">
+                testnet.arcscan.app ↗
+              </a>
             </div>
             <div className="net-item">
               <span className="net-label">Faucet</span>
-              <a href="https://faucet.circle.com" target="_blank" rel="noreferrer" className="net-val mono link">faucet.circle.com ↗</a>
+              <a href="https://faucet.circle.com" target="_blank" rel="noreferrer" className="net-val mono link">
+                faucet.circle.com ↗
+              </a>
             </div>
           </div>
         </div>

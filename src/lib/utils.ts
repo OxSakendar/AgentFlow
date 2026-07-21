@@ -32,9 +32,23 @@ export function explorerAddr(addr: string): string {
   return `https://testnet.arcscan.app/address/${addr}`
 }
 
+/** Resolve the best EVM provider (MetaMask-first, skips Phantom). */
+function resolveProvider(): any {
+  if (typeof window === 'undefined') return null
+  const eth = (window as any).ethereum
+  if (!eth) return null
+  const providers: any[] = eth.providers ?? []
+  if (providers.length > 0) {
+    return providers.find((p: any) => p.isMetaMask && !p.isPhantom)
+      ?? providers.find((p: any) => !p.isPhantom)
+      ?? providers[0]
+  }
+  return eth
+}
+
 /** Switch or add the Arc Testnet to MetaMask */
 export async function switchToArcTestnet(): Promise<void> {
-  const provider = (window as any).ethereum
+  const provider = resolveProvider()
   if (!provider) throw new Error('No wallet found')
 
   const chainId = '0x' + (5042002).toString(16)

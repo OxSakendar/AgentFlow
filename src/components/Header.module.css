@@ -197,3 +197,30 @@
   .inner { padding: 0 16px; }
   .usdcBadge { display: none; }
 }
+
+/* Spinner for network switching */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+/* USDC sub-elements */
+.usdcAmount {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.usdcLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-left: 3px;
+}

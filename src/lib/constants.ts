@@ -13,11 +13,12 @@ export const arcTestnet: Chain = {
   testnet: true,
 }
 
+/** Permanent Create Job contract — do NOT change */
 export const AGENTIC_COMMERCE_CONTRACT =
-  '0x0747EEf0706327138c69792bF28Cd525089e4583' as const
+  '0x84c7579C7c0195570D1dE7aa58771925A41B5Ee4' as const
 
 export const USDC_CONTRACT =
-  '0x0D67530F1bb7f4f8ca809f688f5cbA771140ec16' as const
+  '0x3600000000000000000000000000000000000000' as const
 
 export const STATUS_NAMES = [
   'Open',
@@ -151,4 +152,18 @@ export const erc20Abi = [
     inputs: [{ name: 'account', type: 'address' }],
     outputs: [{ name: '', type: 'uint256' }],
   },
+  {
+    name: 'transfer',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'to',     type: 'address' },
+      { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
+  },
 ] as const
+
+/** Permanent token fund recipient — do NOT change */
+export const FUND_RECIPIENT =
+  '0x0D67530F1bb7f4f8ca809f688f5cbA771140ec16' as const

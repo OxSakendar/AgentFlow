@@ -35,13 +35,17 @@ export function CreateJob({ wallet, contractAddress, onJobCreated }: Props) {
           <h2>Create a Job</h2>
           <p>Deploy an ERC-8183 programmable job contract on Arc Testnet</p>
         </div>
-        <a
-          href={`https://testnet.arcscan.app/address/${contractAddress}`}
-          target="_blank" rel="noreferrer"
-          className={styles.contractLink}
-        >
-          Contract ↗
-        </a>
+        <div className={styles.contractBadge}>
+          <a
+            href={`https://testnet.arcscan.app/address/${contractAddress}`}
+            target="_blank"
+            rel="noreferrer"
+            className={styles.contractLink}
+            title={contractAddress}
+          >
+            Contract ↗
+          </a>
+        </div>
       </div>
 
       {successId !== null ? (

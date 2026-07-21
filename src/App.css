@@ -106,3 +106,161 @@ main {
   .net-item { flex: 1 1 100%; }
   .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
 }
+
+/* ── Wallet Gate ─────────────────────────────────────────────────────────── */
+.gate {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(138,75,255,0.12) 0%, transparent 70%);
+}
+
+.gate-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(138,75,255,0.15), 0 24px 60px rgba(0,0,0,0.4);
+}
+
+.gate-icon {
+  font-size: 52px;
+  background: linear-gradient(135deg, #8a4bff, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 16px rgba(138,75,255,0.6));
+  line-height: 1;
+}
+
+.gate-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.gate-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+.gate-desc strong {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+/* Network info grid inside gate */
+.gate-network {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.gnet-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.gnet-row:last-child { border-bottom: none; }
+
+.gnet-label {
+  color: var(--text-tertiary);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gnet-val {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.gnet-val.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-light);
+}
+
+/* Connect button */
+.gate-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #8a4bff, #6d28d9);
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  box-shadow: 0 0 24px rgba(138,75,255,0.4);
+  letter-spacing: 0.01em;
+}
+.gate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(138,75,255,0.6);
+}
+.gate-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.gate-error {
+  width: 100%;
+  font-size: 13px;
+  color: var(--danger);
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.gate-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin: 0;
+}
+.gate-hint a {
+  color: var(--accent-light);
+  text-decoration: none;
+  font-weight: 500;
+}
+.gate-hint a:hover { text-decoration: underline; }
+
+/* Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.gate-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
