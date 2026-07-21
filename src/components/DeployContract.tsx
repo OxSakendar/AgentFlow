@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import type { WalletState } from '../hooks/useWallet'
 import { useDeployContract } from '../hooks/useDeployContract'
-import { USDC_CONTRACT, AGENTIC_COMMERCE_CONTRACT } from '../lib/constants'
-import { explorerTx, shortenAddress } from '../lib/utils'
+import { USDC_CONTRACT } from '../lib/constants'
+import { explorerTx } from '../lib/utils'
 import styles from './DeployContract.module.css'
 
 interface Props {
@@ -11,13 +11,11 @@ interface Props {
   activeContractAddress: string
 }
 
-export function DeployContract({ wallet, onContractDeployed, activeContractAddress }: Props) {
+export function DeployContract({ wallet }: Props) {
   const { loading, txHash, contractAddress, error, deploy, reset } = useDeployContract(wallet.walletClient)
-  
+
   const [paymentToken, setPaymentToken] = useState<string>(USDC_CONTRACT)
   const [platformTreasury, setPlatformTreasury] = useState('')
-
-  const isDefaultContract = activeContractAddress.toLowerCase() === AGENTIC_COMMERCE_CONTRACT.toLowerCase()
 
   // Set default treasury address to current wallet address when connected
   useEffect(() => {
@@ -37,11 +35,7 @@ export function DeployContract({ wallet, onContractDeployed, activeContractAddre
     await deploy(paymentToken, platformTreasury)
   }
 
-  const handleUseContract = () => {
-    if (contractAddress) {
-      onContractDeployed(contractAddress)
-    }
-  }
+
 
   return (
     <section id="deploy" className={styles.section}>
@@ -51,22 +45,7 @@ export function DeployContract({ wallet, onContractDeployed, activeContractAddre
           <p>Deploy a new programmable job registry for agent commerce on Arc Testnet</p>
         </div>
       </div>
-      <div className={styles.activeStatus}>
-        <span>
-          <strong>Active Contract in App:</strong>{' '}
-          <span className={styles.monoAddress}>{shortenAddress(activeContractAddress)}</span>{' '}
-          {isDefaultContract ? '(Default)' : '(Custom)'}
-        </span>
-        {!isDefaultContract && (
-          <button
-            type="button"
-            className={styles.resetBtn}
-            onClick={() => onContractDeployed(AGENTIC_COMMERCE_CONTRACT)}
-          >
-            Reset to Default
-          </button>
-        )}
-      </div>
+
 
       {contractAddress ? (
         <div className={styles.success}>
@@ -89,15 +68,6 @@ export function DeployContract({ wallet, onContractDeployed, activeContractAddre
           )}
 
           <div className={styles.successActions}>
-            <button 
-              className={styles.btnPrimary} 
-              onClick={handleUseContract}
-              disabled={activeContractAddress.toLowerCase() === contractAddress.toLowerCase()}
-            >
-              {activeContractAddress.toLowerCase() === contractAddress.toLowerCase() 
-                ? 'Currently Active in App' 
-                : 'Use This Contract in App'}
-            </button>
             <button className={styles.btnSecondary} onClick={reset}>
               Deploy Another
             </button>

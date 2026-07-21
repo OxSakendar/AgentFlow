@@ -18,7 +18,27 @@ export function Header({ wallet }: Props) {
     <header className={styles.header}>
       <div className={styles.inner}>
         <div className={styles.logo}>
-          <span className={styles.logoIcon}>⬡</span>
+          {/* Inline SVG hex icon */}
+          <svg className={styles.logoSvg} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#8a4bff"/>
+                <stop offset="100%" stopColor="#3b82f6"/>
+              </linearGradient>
+              <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <polygon points="32,4 56,18 56,46 32,60 8,46 8,18"
+              fill="url(#hg)" opacity="0.18" filter="url(#glow)"/>
+            <polygon points="32,4 56,18 56,46 32,60 8,46 8,18"
+              fill="none" stroke="url(#hg)" strokeWidth="2.5" filter="url(#glow)"/>
+            <polygon points="32,14 48,23 48,41 32,50 16,41 16,23"
+              fill="url(#hg)" opacity="0.85"/>
+            <circle cx="32" cy="32" r="5" fill="#fff" opacity="0.95"/>
+          </svg>
+
           <div>
             <span className={styles.logoText}>AgentFlow</span>
             <span className={styles.logoBadge}>Arc Testnet</span>
