@@ -7,6 +7,7 @@ import { CreateJob } from './components/CreateJob'
 import { JobLookup } from './components/JobLookup'
 import { DeployContract } from './components/DeployContract'
 import { ConnectWalletModal } from './components/ConnectWalletModal'
+import { LegalModal, type LegalModalType } from './components/LegalModal'
 import { AGENTIC_COMMERCE_CONTRACT } from './lib/constants'
 import './App.css'
 
@@ -17,6 +18,7 @@ import './App.css'
 export default function App() {
   const wallet = useWallet()
   const [latestJobId, setLatestJobId] = useState<bigint | null>(null)
+  const [legalModal, setLegalModal] = useState<LegalModalType>(null)
 
   // ── Mandatory wallet gate ──────────────────────────────────────────────────
   if (!wallet.isConnected) {
@@ -77,6 +79,7 @@ export default function App() {
         </div>
 
         <ConnectWalletModal wallet={wallet} />
+        <LegalModal type={legalModal} onClose={() => setLegalModal(null)} />
       </div>
     )
   }
@@ -86,6 +89,7 @@ export default function App() {
     <div className="app">
       <Header wallet={wallet} />
       <ConnectWalletModal wallet={wallet} />
+      <LegalModal type={legalModal} onClose={() => setLegalModal(null)} />
 
       <main>
         <Hero wallet={wallet} />
@@ -151,6 +155,12 @@ export default function App() {
       <footer className="footer">
         <div className="container footer-inner">
           <span>Built on <a href="https://arc.io" target="_blank" rel="noreferrer">Arc</a> · AgentFlow (ERC-8183)</span>
+          <div className="footer-legal">
+            <button type="button" onClick={() => setLegalModal('tos')}>Terms of Service</button>
+            <button type="button" onClick={() => setLegalModal('privacy')}>Privacy Policy</button>
+            <button type="button" onClick={() => setLegalModal('cookie')}>Cookie Policy</button>
+            <button type="button" onClick={() => setLegalModal('contact')}>Contact Us</button>
+          </div>
         </div>
       </footer>
     </div>

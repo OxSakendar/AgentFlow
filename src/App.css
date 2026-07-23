@@ -105,6 +105,29 @@ main {
   text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
 }
 
+.footer-legal {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-legal button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s var(--ease);
+}
+
+.footer-legal button:hover {
+  color: var(--accent-light);
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+
 .footer-links {
   display: flex;
   gap: 24px;
