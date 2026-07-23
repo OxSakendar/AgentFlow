@@ -261,3 +261,11 @@
   border-color: var(--accent);
 }
 
+@media (max-width: 600px) {
+  .section { padding: 20px 16px; margin-top: 20px; }
+  .header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .successActions { flex-direction: column; width: 100%; }
+  .btnPrimary, .btnSecondary { width: 100%; justify-content: center; }
+  .activeStatus { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+

@@ -312,10 +312,42 @@
   cursor: help;
 }
 
-@media (max-width: 768px) {
-  .nav { display: none; }
-  .inner { padding: 0 16px; }
-  .usdcBadge { display: none; }
+@media (max-width: 900px) {
+  .inner {
+    padding: 0 16px;
+    gap: 12px;
+  }
+  .nav {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 4px;
+    padding: 4px 0;
+    max-width: 100%;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 580px) {
+  .inner {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    height: auto;
+  }
+  .logoText {
+    font-size: 15px;
+  }
+  .logoBadge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  .walletArea {
+    gap: 8px;
+  }
 }
 
 /* Spinner for network switching */

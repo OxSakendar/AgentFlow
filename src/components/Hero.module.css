@@ -229,3 +229,38 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 60px 16px 50px;
+  }
+  .content {
+    gap: 20px;
+  }
+  .stats {
+    flex-wrap: wrap;
+    border-radius: var(--radius);
+  }
+  .stat {
+    flex: 1 1 45%;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 8px;
+  }
+  .stat:nth-child(2n) {
+    border-right: none;
+  }
+  .actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .btnPrimary, .btnSecondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+  }
+  .heroWalletCard {
+    max-width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
