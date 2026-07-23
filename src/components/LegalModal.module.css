@@ -222,10 +222,24 @@
 }
 
 @media (max-width: 640px) {
+  .overlay {
+    padding: 12px;
+  }
   .modal {
-    max-height: 90vh;
+    max-height: 92vh;
+    border-radius: var(--radius-lg);
   }
   .header, .body, .footer {
-    padding: 18px 20px;
+    padding: 16px 18px;
+  }
+  .titleGroup h2 {
+    font-size: 17px;
+  }
+  .form {
+    gap: 14px;
+  }
+  .doneBtn {
+    width: 100%;
+    text-align: center;
   }
 }
