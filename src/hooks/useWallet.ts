@@ -11,7 +11,11 @@ export interface WalletState {
   isCorrectChain: boolean
   connectError: string | null
   isSwitchingNetwork: boolean
-  connect: () => Promise<void>
+  isModalOpen: boolean
+  connectingWalletId: string | null
+  openModal: () => void
+  closeModal: () => void
+  connect: (walletId?: string) => Promise<void>
   disconnect: () => void
   refresh: () => Promise<void>
   switchNetwork: () => Promise<void>
@@ -24,9 +28,6 @@ const ARC_CHAIN_HEX = '0x' + ARC_CHAIN_ID.toString(16)
 
 /**
  * Resolve the best EVM provider.
- * EIP-5749: when multiple wallets (Phantom, Keplr, MetaMask…) are installed
- * they expose a `providers` array. We prefer MetaMask, then any non-Phantom
- * provider, then fall back to raw window.ethereum.
  */
 function resolveProvider(): any {
   if (typeof window === 'undefined') return null
@@ -44,6 +45,36 @@ function resolveProvider(): any {
   return eth
 }
 
+function resolveTargetProvider(walletId?: string): any {
+  if (typeof window === 'undefined') return null
+  const win = window as any
+  const eth = win.ethereum
+
+  if (walletId === 'phantom') {
+    if (win.phantom?.ethereum) return win.phantom.ethereum
+    if (eth?.isPhantom) return eth
+  }
+  if (walletId === 'keplr') {
+    if (win.keplr?.ethereum) return win.keplr.ethereum
+  }
+  if (walletId === 'metamask') {
+    if (eth?.providers) {
+      const mm = eth.providers.find((p: any) => p.isMetaMask && !p.isPhantom)
+      if (mm) return mm
+    }
+    if (eth?.isMetaMask && !eth?.isPhantom) return eth
+  }
+  if (walletId === 'base') {
+    if (eth?.providers) {
+      const cb = eth.providers.find((p: any) => p.isCoinbaseWallet || p.isBase)
+      if (cb) return cb
+    }
+    if (eth?.isCoinbaseWallet) return eth
+  }
+
+  return resolveProvider()
+}
+
 /** Add / switch to Arc Testnet using a specific provider instance. */
 async function ensureArcNetwork(provider: any): Promise<void> {
   try {
@@ -53,7 +84,6 @@ async function ensureArcNetwork(provider: any): Promise<void> {
     })
   } catch (err: any) {
     if (err.code === 4902 || err.code === -32603) {
-      // Chain not added yet — add it
       await provider.request({
         method: 'wallet_addEthereumChain',
         params: [
@@ -79,8 +109,13 @@ export function useWallet(): WalletState {
   const [walletClient, setWalletClient] = useState<ReturnType<typeof createWalletClient> | null>(null)
   const [connectError, setConnectError] = useState<string | null>(null)
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [connectingWalletId, setConnectingWalletId] = useState<string | null>(null)
 
   const provider = resolveProvider()
+
+  const openModal = useCallback(() => setIsModalOpen(true), [])
+  const closeModal = useCallback(() => setIsModalOpen(false), [])
 
   const buildWalletClient = useCallback(
     (addr: `0x${string}`) => {
@@ -92,7 +127,6 @@ export function useWallet(): WalletState {
 
   const fetchBalance = useCallback(async (addr: `0x${string}`) => {
     try {
-      // balanceOf on the Arc Testnet USDC system contract (6 decimals)
       const bal = await publicClient.readContract({
         address: USDC_CONTRACT,
         abi: erc20Abi,
@@ -105,20 +139,16 @@ export function useWallet(): WalletState {
     }
   }, [])
 
-
-
   const refresh = useCallback(async () => {
     if (address) await fetchBalance(address)
   }, [address, fetchBalance])
 
-  // ── Switch to Arc Testnet (callable from UI) ──────────────────────────────
   const switchNetwork = useCallback(async () => {
     if (!provider) return
     setConnectError(null)
     setIsSwitchingNetwork(true)
     try {
       await ensureArcNetwork(provider)
-      // chainChanged event will update chainId automatically
     } catch (e: any) {
       if (e?.code !== 4001) {
         setConnectError('Network switch failed: ' + (e?.message ?? String(e)))
@@ -128,28 +158,31 @@ export function useWallet(): WalletState {
     }
   }, [provider])
 
-  // ── Connect wallet ────────────────────────────────────────────────────────
-  const connect = useCallback(async () => {
+  const connect = useCallback(async (walletId?: string) => {
     setConnectError(null)
-    if (!provider) {
-      setConnectError('No wallet found. Please install MetaMask.')
+    setConnectingWalletId(walletId || 'default')
+    
+    const targetProvider = resolveTargetProvider(walletId) || provider
+
+    if (!targetProvider) {
+      setConnectError(`No wallet extension detected for ${walletId ? walletId.toUpperCase() : 'Web3'}. Please install MetaMask or another EVM wallet.`)
+      setConnectingWalletId(null)
       return
     }
+
     try {
-      // 1. Request accounts
-      const accounts: `0x${string}`[] = await provider.request({ method: 'eth_requestAccounts' })
+      const accounts: `0x${string}`[] = await targetProvider.request({ method: 'eth_requestAccounts' })
       if (!accounts?.length) {
         setConnectError('No accounts returned. Did you approve the connection?')
+        setConnectingWalletId(null)
         return
       }
       const addr = accounts[0]
 
-      // 2. Auto-switch to Arc Testnet (mandatory)
       setIsSwitchingNetwork(true)
       try {
-        await ensureArcNetwork(provider)
+        await ensureArcNetwork(targetProvider)
       } catch (e: any) {
-        // User rejected the network switch — warn but still set wallet state
         if (e?.code !== 4001) {
           setConnectError('Please switch to Arc Testnet to use this app.')
         }
@@ -157,19 +190,21 @@ export function useWallet(): WalletState {
         setIsSwitchingNetwork(false)
       }
 
-      // 3. Read final chain after (possible) switch
-      const cid = parseInt(await provider.request({ method: 'eth_chainId' }), 16)
+      const cid = parseInt(await targetProvider.request({ method: 'eth_chainId' }), 16)
       setAddress(addr)
       setChainId(cid)
-      setWalletClient(buildWalletClient(addr))
+      setWalletClient(createWalletClient({ account: addr, chain: arcTestnet, transport: custom(targetProvider) }))
 
-      // 4. Fetch USDC balance
       await fetchBalance(addr)
+      setIsModalOpen(false)
     } catch (e: any) {
-      if (e?.code === 4001) return // user rejected — silent
-      setConnectError(e?.message ?? String(e))
+      if (e?.code !== 4001) {
+        setConnectError(e?.message ?? String(e))
+      }
+    } finally {
+      setConnectingWalletId(null)
     }
-  }, [provider, buildWalletClient, fetchBalance])
+  }, [provider, fetchBalance])
 
   const disconnect = useCallback(() => {
     setAddress(null)
@@ -179,11 +214,9 @@ export function useWallet(): WalletState {
     setConnectError(null)
   }, [])
 
-  // ── Provider event listeners + auto-reconnect ─────────────────────────────
   useEffect(() => {
     if (!provider) return
 
-    // Auto-reconnect if already authorised
     provider
       .request({ method: 'eth_accounts' })
       .then(async (accounts: `0x${string}`[]) => {
@@ -208,18 +241,15 @@ export function useWallet(): WalletState {
       const cid = parseInt(cidHex, 16)
       setChainId(cid)
 
-      // If user switches away from Arc Testnet — offer auto-switch back
       if (cid !== ARC_CHAIN_ID) {
         setIsSwitchingNetwork(true)
         try {
           await ensureArcNetwork(provider)
         } catch {
-          // User declined — they'll see the "Wrong Network" banner
         } finally {
           setIsSwitchingNetwork(false)
         }
       } else {
-        // Refreshed to correct chain — update balance
         setChainId(ARC_CHAIN_ID)
         setConnectError(null)
       }
@@ -233,10 +263,22 @@ export function useWallet(): WalletState {
     }
   }, [provider, buildWalletClient, fetchBalance, disconnect])
 
-  // Re-fetch balance whenever chainId settles on Arc Testnet
   useEffect(() => {
-    if (address && chainId === ARC_CHAIN_ID) {
+    if (!address || chainId !== ARC_CHAIN_ID) return
+
+    fetchBalance(address)
+    const interval = setInterval(() => {
       fetchBalance(address)
+    }, 10000)
+
+    const handleFocus = () => {
+      fetchBalance(address)
+    }
+
+    window.addEventListener('focus', handleFocus)
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('focus', handleFocus)
     }
   }, [chainId, address, fetchBalance])
 
@@ -248,6 +290,10 @@ export function useWallet(): WalletState {
     isCorrectChain: chainId === ARC_CHAIN_ID,
     connectError,
     isSwitchingNetwork,
+    isModalOpen,
+    connectingWalletId,
+    openModal,
+    closeModal,
     connect,
     disconnect,
     refresh,
@@ -256,3 +302,4 @@ export function useWallet(): WalletState {
     formattedUsdc: formatUnits(usdcBalance, 6),
   }
 }
+

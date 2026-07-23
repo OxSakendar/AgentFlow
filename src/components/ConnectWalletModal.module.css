@@ -1,0 +1,385 @@
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalSlide {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 660px;
+  position: relative;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.16),
+    0 4px 16px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  animation: modalSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  border: none;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.15s ease;
+}
+
+.closeBtn:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.contentGrid {
+  display: flex;
+  min-height: 420px;
+}
+
+/* ── LEFT PANEL ─────────────────────────────────────────────────────────── */
+.leftPanel {
+  flex: 1.1;
+  padding: 28px 24px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #f0f0f4;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+}
+
+.sectionHeaderInstalled {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0066FF;
+  margin-bottom: 6px;
+}
+
+.sectionHeaderPopular {
+  font-size: 13px;
+  font-weight: 700;
+  color: #8E8E93;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+.walletList {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.walletRow {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.walletRow:hover {
+  background: #f4f6f9;
+}
+
+.walletRow:active {
+  transform: scale(0.99);
+}
+
+.iconContainer {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.bgKeplr {
+  background: linear-gradient(135deg, #00c2ff 0%, #0088ff 100%);
+}
+
+.bgPhantom {
+  background: #ab9ff2;
+}
+
+.bgRainbow {
+  background: #10101c;
+}
+
+.bgBase {
+  background: #0052ff;
+}
+
+.bgMetaMask {
+  background: linear-gradient(135deg, #f6851b 0%, #e2761b 100%);
+}
+
+.bgWalletConnect {
+  background: #3b99fc;
+}
+
+.walletSvg {
+  width: 20px;
+  height: 20px;
+}
+
+.walletName {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.connectingDot {
+  margin-left: auto;
+  font-size: 12px;
+  color: #0066FF;
+  font-weight: 600;
+}
+
+.installedBadge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0066ff;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.errorNotice {
+  margin-top: 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* ── RIGHT PANEL ────────────────────────────────────────────────────────── */
+.rightPanel {
+  flex: 0.9;
+  padding: 28px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rightTitle {
+  font-size: 19px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 20px 0;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.infoCardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.infoCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+}
+
+.cardBadgeDark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #1e1b4b;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(30, 27, 75, 0.15);
+}
+
+.badgeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  font-size: 11px;
+  line-height: 1;
+  text-align: center;
+}
+
+.gridRainbow, .gridPixel, .gridEth, .gridRose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gridEth {
+  color: #a5b4fc;
+  font-weight: bold;
+}
+
+.cardBadgeGradient {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fbcfe8 0%, #a5f3fc 100%);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(251, 207, 232, 0.4);
+}
+
+.keyholeCapsule {
+  width: 14px;
+  height: 22px;
+  background: #111827;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.keyholeDot {
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeading {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 3px 0;
+  line-height: 1.3;
+}
+
+.cardDesc {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.bottomActions {
+  margin-top: auto;
+  padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.getWalletBtn {
+  background: #0066FF;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 10px 28px;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+  display: inline-block;
+}
+
+.getWalletBtn:hover {
+  background: #0052cc;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 102, 255, 0.4);
+}
+
+.learnMoreLink {
+  color: #0066FF;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.learnMoreLink:hover {
+  text-decoration: underline;
+}
+
+.learnMoreLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 680px) {
+  .contentGrid {
+    flex-direction: column;
+  }
+  .leftPanel {
+    border-right: none;
+    border-bottom: 1px solid #f0f0f4;
+    padding: 24px;
+  }
+  .rightPanel {
+    padding: 24px;
+  }
+}

@@ -6,6 +6,7 @@ import { InfoCards } from './components/InfoCards'
 import { CreateJob } from './components/CreateJob'
 import { JobLookup } from './components/JobLookup'
 import { DeployContract } from './components/DeployContract'
+import { ConnectWalletModal } from './components/ConnectWalletModal'
 import { AGENTIC_COMMERCE_CONTRACT } from './lib/constants'
 import './App.css'
 
@@ -52,7 +53,7 @@ export default function App() {
 
             <button
               className="gate-btn"
-              onClick={wallet.connect}
+              onClick={wallet.openModal}
               disabled={wallet.isSwitchingNetwork}
             >
               {wallet.isSwitchingNetwork ? (
@@ -74,6 +75,8 @@ export default function App() {
             </p>
           </div>
         </div>
+
+        <ConnectWalletModal wallet={wallet} />
       </div>
     )
   }
@@ -82,6 +85,7 @@ export default function App() {
   return (
     <div className="app">
       <Header wallet={wallet} />
+      <ConnectWalletModal wallet={wallet} />
 
       <main>
         <Hero wallet={wallet} />

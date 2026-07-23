@@ -17,7 +17,16 @@ export function Header({ wallet }: Props) {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <div className={styles.logo}>
+        <a
+          href="#"
+          className={styles.logo}
+          onClick={(e) => {
+            e.preventDefault()
+            window.location.hash = ''
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+          title="AgentFlow Home"
+        >
           {/* Inline SVG hex icon */}
           <svg className={styles.logoSvg} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -43,9 +52,20 @@ export function Header({ wallet }: Props) {
             <span className={styles.logoText}>AgentFlow</span>
             <span className={styles.logoBadge}>Arc Testnet</span>
           </div>
-        </div>
+        </a>
 
         <nav className={styles.nav}>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault()
+              window.location.hash = ''
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            className={`${styles.navLink} ${(!hash || hash === '#' || hash === '#home') ? styles.active : ''}`}
+          >
+            Home
+          </a>
           <a href="#jobs"   className={`${styles.navLink} ${hash === '#jobs'   ? styles.active : ''}`}>Jobs</a>
           <a href="#create" className={`${styles.navLink} ${hash === '#create' ? styles.active : ''}`}>Create</a>
           <a href="#lookup" className={`${styles.navLink} ${hash === '#lookup' ? styles.active : ''}`}>Lookup</a>
@@ -58,9 +78,8 @@ export function Header({ wallet }: Props) {
         <div className={styles.walletArea}>
           {wallet.isConnected ? (
             <div className={styles.walletInfo}>
-              {/* USDC Balance */}
+              {/* USDC Balance Display */}
               <div className={styles.usdcBadge}>
-                <span className={styles.dot} />
                 <span className={styles.usdcAmount}>
                   {parseFloat(wallet.formattedUsdc).toLocaleString('en-US', {
                     minimumFractionDigits: 2,
@@ -68,6 +87,14 @@ export function Header({ wallet }: Props) {
                   })}
                 </span>
                 <span className={styles.usdcLabel}>USDC</span>
+                <button
+                  type="button"
+                  className={styles.refreshBtn}
+                  onClick={() => wallet.refresh()}
+                  title="Refresh USDC Balance"
+                >
+                  ↻
+                </button>
               </div>
 
               {/* Wrong network banner */}
@@ -111,7 +138,7 @@ export function Header({ wallet }: Props) {
               <button
                 id="connect-wallet-btn"
                 className={styles.connectBtn}
-                onClick={wallet.connect}
+                onClick={wallet.openModal}
                 disabled={wallet.isSwitchingNetwork}
               >
                 {wallet.isSwitchingNetwork ? (
@@ -121,7 +148,7 @@ export function Header({ wallet }: Props) {
                 )}
               </button>
               {wallet.connectError && (
-                <div className={styles.connectError} title={wallet.connectError}>
+                <div className={styles.connectError} onClick={wallet.openModal} title={wallet.connectError}>
                   ⚠ {wallet.connectError}
                 </div>
               )}

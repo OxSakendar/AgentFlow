@@ -30,12 +30,22 @@ export function Hero({ wallet }: Props) {
         <div className={styles.actions}>
           {wallet.isConnected ? (
             <>
+              <div className={styles.heroWalletCard}>
+                <span className={styles.heroWalletDot} />
+                <span className={styles.heroWalletAddress}>
+                  {wallet.address?.slice(0, 6)}…{wallet.address?.slice(-4)}
+                </span>
+                <span className={styles.heroWalletDivider}>•</span>
+                <span className={styles.heroWalletBalance}>
+                  {parseFloat(wallet.formattedUsdc).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })} USDC
+                </span>
+              </div>
               <a href="#create" className={styles.btnPrimary}>Create a Job ↓</a>
               <a href="#jobs" className={styles.btnSecondary}>Browse Jobs</a>
             </>
           ) : (
             <>
-              <button id="hero-connect-btn" className={styles.btnPrimary} onClick={wallet.connect}>
+              <button id="hero-connect-btn" className={styles.btnPrimary} onClick={wallet.openModal}>
                 Connect Wallet
               </button>
               <a href="#jobs" className={styles.btnSecondary}>Browse Jobs</a>
