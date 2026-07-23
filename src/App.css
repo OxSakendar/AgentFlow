@@ -12,7 +12,7 @@ main {
 .panels {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 28px;
   padding-bottom: 80px;
   scroll-margin-top: 96px;
 }
@@ -26,11 +26,7 @@ main {
 .network-strip {
   display: flex;
   align-items: center;
-  gap: 0;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+  gap: 12px;
   margin-bottom: 80px;
 }
 
@@ -38,113 +34,139 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 18px 20px;
-  border-right: 1px solid var(--border);
-  transition: background 0.2s;
+  gap: 6px;
+  padding: 20px 22px;
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-backdrop);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.25s var(--ease);
+  box-shadow: var(--shadow-card);
 }
-.net-item:last-child { border-right: none; }
-.net-item:hover { background: var(--bg-elevated); }
+.net-item:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(138, 75, 255, 0.15);
+}
 
 .net-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .net-val {
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 .net-val.mono {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
 }
 .net-val.link {
   color: var(--accent-light);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: all 0.2s var(--ease);
 }
-.net-val.link:hover { color: #c084fc; }
+.net-val.link:hover {
+  color: #c084fc;
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+}
 
 /* Footer */
 .footer {
-  background: var(--bg-surface);
+  background: rgba(10, 14, 28, 0.85);
+  backdrop-filter: var(--glass-backdrop);
   border-top: 1px solid var(--border);
-  padding: 24px;
+  padding: 32px 24px;
+  margin-top: auto;
 }
 
 .footer-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-tertiary);
 }
 
 .footer-inner a {
   color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.2s;
+  font-weight: 500;
+  transition: all 0.2s var(--ease);
 }
-.footer-inner a:hover { color: var(--accent-light); }
+.footer-inner a:hover {
+  color: var(--accent-light);
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
 
 .footer-links {
   display: flex;
-  gap: 20px;
+  gap: 24px;
 }
 
 @media (max-width: 900px) {
   .panels { grid-template-columns: 1fr; }
   .network-strip { flex-wrap: wrap; }
-  .net-item { flex: 1 1 45%; }
+  .net-item { flex: 1 1 calc(50% - 12px); }
 }
 
 @media (max-width: 560px) {
   .net-item { flex: 1 1 100%; }
-  .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+  .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
 }
 
-/* ── Wallet Gate ─────────────────────────────────────────────────────────── */
+/* ── Wallet Gate Screen ─────────────────────────────────────────────────── */
 .gate {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(138,75,255,0.12) 0%, transparent 70%);
+  padding: 60px 20px;
+  background: radial-gradient(ellipse 80% 60% at 50% 10%, rgba(138, 75, 255, 0.16) 0%, transparent 70%);
 }
 
 .gate-card {
   width: 100%;
-  max-width: 460px;
-  background: var(--bg-card);
+  max-width: 480px;
+  background: rgba(15, 20, 38, 0.85);
+  backdrop-filter: var(--glass-backdrop);
   border: 1px solid var(--border-accent);
-  border-radius: var(--radius-lg);
-  padding: 40px 36px;
+  border-radius: var(--radius-xl);
+  padding: 44px 38px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
   text-align: center;
-  box-shadow: 0 0 60px rgba(138,75,255,0.15), 0 24px 60px rgba(0,0,0,0.4);
+  box-shadow: 0 0 80px rgba(138, 75, 255, 0.2), 0 32px 64px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s var(--ease);
 }
 
 .gate-icon {
-  font-size: 52px;
-  background: linear-gradient(135deg, #8a4bff, #3b82f6);
+  font-size: 56px;
+  background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 16px rgba(138,75,255,0.6));
+  filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.7));
   line-height: 1;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .gate-title {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.02em;
@@ -153,7 +175,7 @@ main {
 .gate-desc {
   font-size: 14px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
 }
 .gate-desc strong {
@@ -164,7 +186,7 @@ main {
 /* Network info grid inside gate */
 .gate-network {
   width: 100%;
-  background: var(--bg-surface);
+  background: rgba(10, 14, 28, 0.9);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -174,7 +196,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 12px 18px;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
 }
@@ -182,15 +204,15 @@ main {
 
 .gnet-label {
   color: var(--text-tertiary);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .gnet-val {
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: 600;
 }
 .gnet-val.mono {
   font-family: var(--font-mono);
@@ -204,23 +226,24 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--font-sans);
   font-size: 15px;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(135deg, #8a4bff, #6d28d9);
+  background: linear-gradient(135deg, #8a4bff 0%, #6d28d9 100%);
   border: none;
-  padding: 14px 24px;
-  border-radius: 12px;
+  padding: 15px 26px;
+  border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.25s var(--ease);
-  box-shadow: 0 0 24px rgba(138,75,255,0.4);
+  box-shadow: 0 0 32px rgba(138, 75, 255, 0.45);
   letter-spacing: 0.01em;
 }
 .gate-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 0 40px rgba(138,75,255,0.6);
+  box-shadow: 0 0 50px rgba(138, 75, 255, 0.7);
+  background: linear-gradient(135deg, #985cff 0%, #7c3aed 100%);
 }
 .gate-btn:disabled {
   opacity: 0.7;
@@ -231,24 +254,27 @@ main {
   width: 100%;
   font-size: 13px;
   color: var(--danger);
-  background: rgba(239,68,68,0.08);
-  border: 1px solid rgba(239,68,68,0.3);
-  border-radius: 8px;
-  padding: 10px 14px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
   text-align: left;
 }
 
 .gate-hint {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-tertiary);
   margin: 0;
 }
 .gate-hint a {
   color: var(--accent-light);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
-.gate-hint a:hover { text-decoration: underline; }
+.gate-hint a:hover {
+  text-decoration: underline;
+  color: #c084fc;
+}
 
 /* Spinner */
 @keyframes spin {
@@ -256,9 +282,9 @@ main {
 }
 .gate-spinner {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
