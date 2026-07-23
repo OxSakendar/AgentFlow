@@ -151,11 +151,6 @@ export default function App() {
       <footer className="footer">
         <div className="container footer-inner">
           <span>Built on <a href="https://arc.io" target="_blank" rel="noreferrer">Arc</a> · AgentFlow (ERC-8183)</span>
-          <span className="footer-links">
-            <a href="https://docs.arc.io/build/agentic-economy" target="_blank" rel="noreferrer">Docs ↗</a>
-            <a href="https://testnet.arcscan.app" target="_blank" rel="noreferrer">Explorer ↗</a>
-            <a href="https://discord.com/invite/buildonarc" target="_blank" rel="noreferrer">Discord ↗</a>
-          </span>
         </div>
       </footer>
     </div>
