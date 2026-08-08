@@ -68,7 +68,7 @@ export const agenticCommerceAbi = [
   {
     name: 'fund',
     type: 'function',
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     inputs: [
       { name: 'jobId',     type: 'uint256' },
       { name: 'optParams', type: 'bytes'   },
@@ -96,6 +96,30 @@ export const agenticCommerceAbi = [
       { name: 'optParams', type: 'bytes'   },
     ],
     outputs: [],
+  },
+  {
+    name: 'jobCounter',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint256' }],
+  },
+  {
+    name: 'jobs',
+    type: 'function',
+    stateMutability: 'view',
+    inputs: [{ name: 'jobId', type: 'uint256' }],
+    outputs: [
+      { name: 'id',          type: 'uint256'  },
+      { name: 'client',      type: 'address'  },
+      { name: 'provider',    type: 'address'  },
+      { name: 'evaluator',   type: 'address'  },
+      { name: 'description', type: 'string'   },
+      { name: 'budget',      type: 'uint256'  },
+      { name: 'expiredAt',   type: 'uint256'  },
+      { name: 'status',      type: 'uint8'    },
+      { name: 'hook',        type: 'address'  },
+    ],
   },
   {
     name: 'getJob',
